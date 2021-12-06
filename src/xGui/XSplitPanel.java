@@ -111,6 +111,7 @@ public class XSplitPanel extends XPanel implements ComponentListener, MouseListe
 	}
 	
 	public void loadPreset(PresetStep step, boolean first) {
+		if(step == null) return;
 		die();
 		if(first) {
 			remove(right);

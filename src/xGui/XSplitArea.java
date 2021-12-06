@@ -70,13 +70,13 @@ public class XSplitArea extends XPanel implements ComponentListener, KeyListener
 			load(getter);
 		}
 		
-		addComponentListener(this);
-		body.addMouseListener(this);
+//		addComponentListener(this);
+//		body.addMouseListener(this);
 	}
 	
 	private void toWindow() {
 		if(loadedGetter == null) return;
-		XFrame window = new XFrame(loadedGetter.name, getWidth(), getHeight() + 15);// top bar
+		XFrame window = new XFrame(loadedGetter.name, XFrame.LOGO, getWidth(), getHeight() + 15);// top bar
 		window.setDefaultCloseOperation(XFrame.DISPOSE_ON_CLOSE);
 		window.getContentPane().setBackground(XTheme.getTheme().getBGColor(BackgroundType.layer2));;
 		window.setLocation(getLocationOnScreen());
@@ -98,10 +98,12 @@ public class XSplitArea extends XPanel implements ComponentListener, KeyListener
 	
 	private void load(SplitGetter getter) {
 		head.getCenter().removeAll();
-		head.getCenter().add(head.getCenter().add(new XLabel(getter.name, new XStyle(FontType.h2, FontColor.important, BackgroundType.none))));
+		if(getter == null) return;
+		head.getCenter().add(new XLabel(getter.name, new XStyle(FontType.h2, FontColor.important, BackgroundType.none)));
+//		head.getCenter().add(head.getCenter().add(new XLabel(getter.name, new XStyle(FontType.h2, FontColor.important, BackgroundType.none))));
 		body.removeAll();
 		component = getter.getComponent();
-		if(component instanceof ComponentListener) {			
+		if(component instanceof ComponentListener) {
 			XSplitPanel.compListeners.add((ComponentListener) component);
 		}
 		body.add(component, BorderLayout.CENTER);
@@ -121,6 +123,7 @@ public class XSplitArea extends XPanel implements ComponentListener, KeyListener
 	}
 	
 	public static void addAllSplitGetter(List<SplitGetter> splitGetters) {
+		if(splitGetters == null) return;
 		XSplitArea.splitGetters.addAll(splitGetters);
 	}
 	
@@ -144,6 +147,7 @@ public class XSplitArea extends XPanel implements ComponentListener, KeyListener
 	
 	@Override
 	public void componentResized(ComponentEvent e) {
+		body.setSize(getWidth(), body.getHeight());
 	}
 
 	@Override

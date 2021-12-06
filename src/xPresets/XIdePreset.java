@@ -14,6 +14,7 @@ import javax.swing.JMenuItem;
 import xGui.PresetStep;
 import xGui.SplitGetter;
 import xGui.XDualPanel;
+import xGui.XFrame;
 import xGui.XLabel;
 import xGui.XMenuBar;
 import xGui.XPanel;
@@ -26,9 +27,11 @@ import xThemes.XStyle.FontType;
 import xThemes.XTheme;
 
 
-public abstract class XIDELayoutPanel extends XPanel {
+public abstract class XIdePreset extends XPanel {
 
 	private static final long serialVersionUID = 1L;
+	
+	XFrame frame;
 
 	protected XDualPanel header = new XDualPanel(XStyle.BACKGROUND);
 	protected XSplitPanel body;
@@ -38,8 +41,9 @@ public abstract class XIDELayoutPanel extends XPanel {
 	
 	protected XLabel versionLabel;
 	
-	public XIDELayoutPanel(String programVersion) {
+	public XIdePreset(String name, String imageName, String programVersion) {
 		super(new XBorderLayout());
+		frame = new XFrame(name, imageName, 1200, 800);
 		//header
 		initHeaderLeftMenuBar(menu);
 		menu.add(getThemeSelectMenu());
@@ -58,6 +62,8 @@ public abstract class XIDELayoutPanel extends XPanel {
 		add(header, BorderLayout.NORTH);
 		add(body, BorderLayout.CENTER);
 		add(footer, BorderLayout.SOUTH);
+		
+		frame.add(this);
 	}
 	
 	public abstract List<SplitGetter> getSplitGetter();

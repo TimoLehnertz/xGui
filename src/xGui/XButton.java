@@ -215,5 +215,6 @@ public class XButton extends JPanel implements XThemeListener, MouseListener{
 		if(!mouseDown) {
 			XTheme.updateStyleOn(this, styleDefault);
 		}
+		getFrame().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
 }

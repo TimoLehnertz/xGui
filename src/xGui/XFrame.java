@@ -9,15 +9,21 @@ import javax.swing.UIManager;
 
 import xThemes.XStyle;
 import xThemes.XStyle.BackgroundType;
+import xUtils.XUtils;
 import xThemes.XTheme;
 import xThemes.XThemeListener;
 
 public class XFrame extends JFrame implements XThemeListener {
 
 	private static final long serialVersionUID = 1L;
+	public static String LOGO;
 	
-	public XFrame(String name, int width, int height) {
+	public XFrame(String name, String logoImg, int width, int height) {
 		super(name);
+		if(logoImg != null && logoImg.length() > 0) {			
+			setIconImage(XUtils.getImage(logoImg).getImage());
+			LOGO = logoImg;
+		}
 		Locale.setDefault(Locale.Category.FORMAT, Locale.ENGLISH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setBounds(0, 0, width, height);

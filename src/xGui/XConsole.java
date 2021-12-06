@@ -1,8 +1,13 @@
 package xGui;
 
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,6 +41,7 @@ public class XConsole extends XPanel implements ComponentListener {
 	
 	public void log(String msg, boolean in) {
 		LogLine log = new LogLine(now() + "  |  " + (in ? "<<  " : ">>  ") + msg, false);
+		log.copyString = msg;
 		lines.add(log);
 		add(log);
 		if(lines.size() >= maxLines) {
@@ -82,15 +88,17 @@ public class XConsole extends XPanel implements ComponentListener {
 	public void componentHidden(ComponentEvent e) {
 	}
 	
-	public class LogLine extends XLabel {
+	public class LogLine extends XLabel implements MouseListener {
 
 		private static final long serialVersionUID = 1L;
-
+		public String copyString = null;
+		
 		public LogLine(String msg, boolean zebra) {
 			super(msg);
 			setZebra(zebra);
 			setOpaque(true);
 			setHorizontalAlignment(LEFT);
+			addMouseListener(this);
 		}
 		
 		public void setZebra(boolean zebra) {
@@ -100,6 +108,44 @@ public class XConsole extends XPanel implements ComponentListener {
 				style.backgroundType = BackgroundType.layer2;
 			}
 			updateTheme();
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			System.out.println("Coppied to clipboard");
+			String myString;
+			if(copyString != null) {
+				myString = copyString;
+			} else {
+				myString = getText();
+			}
+			StringSelection stringSelection = new StringSelection(myString);
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			clipboard.setContents(stringSelection, null);
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 }

@@ -10,7 +10,7 @@ import xThemes.XStyle.FontType;
 public class BlackWidowTheme extends XTheme {
 	
 	public BlackWidowTheme() {
-		super("Black Widow", "Black Widow theme - deeply black with red accents", Color.DARK_GRAY);
+		super("Black Widow", "Black Widow theme - deeply black with red accents", new Color(131, 26, 25));
 	}
 
 	@Override

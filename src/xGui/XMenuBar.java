@@ -2,6 +2,8 @@ package xGui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.management.RuntimeErrorException;
 import javax.swing.JComponent;
@@ -23,6 +25,14 @@ public class XMenuBar extends JMenuBar implements XThemeListener {
 	private Color fg = Color.white;
 	
 	XStyle style;
+	
+	@Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(bg);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+    }
 	
 	public XMenuBar() {
 		this(new XStyle());
@@ -79,6 +89,7 @@ public class XMenuBar extends JMenuBar implements XThemeListener {
 		if(menuElement instanceof JMenuItem)
 			updateComponent((JMenuItem) menuElement.getComponent());
 		
+		
 		if(!(menuElement instanceof JMenu)) return;
 		JMenu menu = (JMenu) menuElement;
 		updateComponent(menu);
@@ -91,7 +102,7 @@ public class XMenuBar extends JMenuBar implements XThemeListener {
         }
 	}
 	
-	private void updateComponent(JComponent c) {
+	private void updateComponent(JMenuItem c) {
 		c.setForeground(fg);
 		c.setBackground(bg);
         c.setOpaque(true);
