@@ -20,7 +20,7 @@ public class SplitGetter {
 		this.icon = icon;
 		this.supplier = supplier;
 	}
-	
+
 	protected JComponent getComponent() {
 		if(component == null) {
 			component = supplier.getComponent();

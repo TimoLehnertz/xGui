@@ -73,7 +73,6 @@ public class XSplitArea extends XPanel implements ComponentListener, KeyListener
 //		addComponentListener(this);
 //		body.addMouseListener(this);
 	}
-	
 	private void toWindow() {
 		if(loadedGetter == null) return;
 		XFrame window = new XFrame(loadedGetter.name, XFrame.LOGO, getWidth(), getHeight() + 15);// top bar

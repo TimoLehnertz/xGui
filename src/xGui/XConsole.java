@@ -6,6 +6,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
@@ -13,9 +15,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+
 import xThemes.XStyle.BackgroundType;
 
-public class XConsole extends XPanel implements ComponentListener {
+public abstract class XConsole extends XPanel implements ComponentListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,27 +30,62 @@ public class XConsole extends XPanel implements ComponentListener {
 	
 	private int maxLines = 100;
 	
+	private XPanel body = new XPanel();
+	private XPanel haed = new XPanel();
+	
 	public XConsole() {
 		super();
 		setLayout(new BorderLayout());
-		setLayout(null);
+		add(haed, BorderLayout.NORTH);
+		add(body, BorderLayout.CENTER);
+		body.setLayout(null);
+		XButton sendBtn = new XButton("Send");
+		JTextField textField = new JTextField();
+		textField.setColumns(20);
+		haed.add(textField);
+		haed.add(sendBtn);
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					String msg = textField.getText();
+					textField.setText("");
+					send(msg + "\n");
+					log(msg, true);
+				}
+				super.keyReleased(e);
+			}
+		});
+		sendBtn.addActionListener(e -> {
+			String msg = textField.getText();
+			textField.setText("");
+			send(msg + "\n");
+			log(msg, true);
+		});
 		addComponentListener(this);
 	}
 	
+	public abstract void send(String msg);
+	
 	public void clear() {
 		lines.clear();
-		removeAll();
+		body.removeAll();
 		revalidate();
 		repaint();
 	}
 	
+	/**
+	 * 
+	 * @param msg
+	 * @param in
+	 */
 	public void log(String msg, boolean in) {
 		LogLine log = new LogLine(now() + "  |  " + (in ? "<<  " : ">>  ") + msg, false);
 		log.copyString = msg;
 		lines.add(log);
-		add(log);
+		body.add(log);
 		if(lines.size() >= maxLines) {
-			remove(lines.get(0));
+			body.remove(lines.get(0));
 			lines.remove(0);
 		}
 		update();
@@ -57,8 +97,8 @@ public class XConsole extends XPanel implements ComponentListener {
 		int height = 16;
 		boolean zebra = false;
 		for (int i = Math.min(maxLines - 1, lines.size() - 1); i >= 0; i--) {
-			lines.get(i).setSize(getWidth() + 500, height);
-			lines.get(i).setLocation(0, getHeight() - (used + height));
+			lines.get(i).setSize(body.getWidth() + 500, height);
+			lines.get(i).setLocation(0, body.getHeight() - (used + height));
 			lines.get(i).setZebra(zebra);
 			used += height + padding;
 			zebra = !zebra;
