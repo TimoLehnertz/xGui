@@ -23,10 +23,10 @@ public class XGraphViewer extends XPanel {
 	private XPanel plotterPanel = new XPanel();
 	private XButton addButton = new XButton("Add");
 	private XButton open3dBtn = new XButton("3D View");
+	private XButton record = new XButton("Record");
 	
 	public XGraphViewer() {
 		super();
-		
 		setLayout(new BorderLayout());
 		add(header, BorderLayout.NORTH);
 		add(plotterPanel, BorderLayout.CENTER);
@@ -45,6 +45,10 @@ public class XGraphViewer extends XPanel {
 		header.add(combo);
 		header.add(addButton);
 		header.add(open3dBtn);
+		header.add(record);
+		open3dBtn.addActionListener(e -> {
+			
+		});
 	}
 	
 	private void addPlotter(XPlotter p) {
